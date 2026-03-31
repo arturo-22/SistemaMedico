@@ -1,0 +1,82 @@
+<div class="card shadow-sm mt-4">
+  <div
+    class="card-header bg-white d-flex flex-column flex-md-row justify-content-between align-items-center gap-3"
+  >
+    <h3 class="mb-0 text-primary">Directorio de Pacientes</h3>
+    <a routerLink="/patients/new" class="btn btn-primary">
+      <i class="bi bi-plus-lg"></i> Registrar Nuevo Paciente
+    </a>
+  </div>
+
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col-12 col-md-6">
+        <div class="input-group">
+          <span class="input-group-text bg-white">
+            <i class="bi bi-search"></i>
+          </span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por Nombre, Género, Teléfono..."
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearch()"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light text-nowrap">
+          <tr>
+            <th>Nombre</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Género</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of patients">
+            <td>{{ patient.firstName }} {{ patient.lastName }}</td>
+            <td>{{ patient.birthDate | date: "shortDate" }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ patient.address }}</td>
+            <td>{{ patient.phone }}</td>
+            <td>{{ patient.email }}</td>
+            <td class="text-center text-nowrap">
+              <a
+                [routerLink]="['/patients/edit', patient.id]"
+                class="btn btn-sm btn-outline-warning me-2"
+              >
+                Editar
+              </a>
+              <a
+                [routerLink]="['/appointments']"
+                [queryParams]="{ patientId: patient.id }"
+                class="btn btn-sm btn-outline-info me-2"
+                title="Ver citas del paciente"
+              >
+                Ver citas
+              </a>
+              <button
+                (click)="deletePatient(patient.id)"
+                class="btn btn-sm btn-outline-danger"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="patients.length === 0">
+            <td colspan="7" class="text-center text-muted py-4">
+              No se encontraron pacientes.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

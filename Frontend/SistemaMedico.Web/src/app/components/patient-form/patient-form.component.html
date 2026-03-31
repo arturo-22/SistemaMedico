@@ -1,0 +1,146 @@
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">
+        {{ isEditMode ? "Editar Paciente" : "Registrar Nuevo Paciente" }}
+      </h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nombres</label>
+            <input
+              type="text"
+              formControlName="firstName"
+              class="form-control"
+              (keydown)="onlyLetters($event)"
+              [ngClass]="{
+                'is-invalid':
+                  patientForm.get('firstName')?.invalid &&
+                  patientForm.get('firstName')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">{{ getError("firstName") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Apellidos</label>
+            <input
+              type="text"
+              formControlName="lastName"
+              class="form-control"
+              (keydown)="onlyLetters($event)"
+              [ngClass]="{
+                'is-invalid':
+                  patientForm.get('lastName')?.invalid &&
+                  patientForm.get('lastName')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">{{ getError("lastName") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Fecha de Nacimiento</label>
+            <input
+              type="date"
+              formControlName="birthDate"
+              class="form-control"
+              [max]="today"
+              [ngClass]="{
+                'is-invalid':
+                  patientForm.get('birthDate')?.invalid &&
+                  patientForm.get('birthDate')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">{{ getError("birthDate") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Género</label>
+            <select
+              formControlName="gender"
+              class="form-select"
+              [ngClass]="{
+                'is-invalid':
+                  patientForm.get('gender')?.invalid &&
+                  patientForm.get('gender')?.touched,
+              }"
+            >
+              <option value="">-- Seleccione --</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
+            <div class="invalid-feedback">{{ getError("gender") }}</div>
+          </div>
+
+          <div class="col-12 mb-3">
+            <label class="form-label">Dirección</label>
+            <textarea
+              formControlName="address"
+              class="form-control"
+              rows="2"
+              [ngClass]="{
+                'is-invalid':
+                  patientForm.get('address')?.invalid &&
+                  patientForm.get('address')?.touched,
+              }"
+            ></textarea>
+            <div class="invalid-feedback">{{ getError("address") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Teléfono</label>
+            <input
+              type="tel"
+              formControlName="phone"
+              class="form-control"
+              maxlength="9"
+              (keydown)="onlyNumbers($event)"
+              [ngClass]="{
+                'is-invalid':
+                  patientForm.get('phone')?.invalid &&
+                  patientForm.get('phone')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">{{ getError("phone") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Correo Electrónico</label>
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  patientForm.get('email')?.invalid &&
+                  patientForm.get('email')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">{{ getError("email") }}</div>
+          </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            routerLink="/patients"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="patientForm.invalid || (isEditMode && !patientForm.dirty)"
+          >
+            <i class="bi bi-save"></i>
+            {{ isEditMode ? "Actualizar" : "Guardar" }} Paciente
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<div class="container mt-4">
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">
+        {{ appointmentId ? "Editar Cita" : "Agendar Nueva Cita" }}
+      </h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Paciente</label>
+            <select
+              formControlName="patientId"
+              class="form-select"
+              [ngClass]="{
+                'is-invalid':
+                  appointmentForm.get('patientId')?.invalid &&
+                  appointmentForm.get('patientId')?.touched,
+              }"
+            >
+              <option value="">-- Seleccione un Paciente --</option>
+              <option *ngFor="let p of patients" [value]="p.id">
+                {{ p.firstName }} {{ p.lastName }}
+              </option>
+            </select>
+            <div class="invalid-feedback">{{ getError("patientId") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nombre del Médico</label>
+            <input
+              type="text"
+              formControlName="doctorName"
+              class="form-control"
+              (keydown)="onlyLetters($event)"
+              [ngClass]="{
+                'is-invalid':
+                  appointmentForm.get('doctorName')?.invalid &&
+                  appointmentForm.get('doctorName')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">{{ getError("doctorName") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Fecha y Hora</label>
+            <input
+              type="datetime-local"
+              formControlName="appointmentDate"
+              class="form-control"
+              [min]="minDate"
+              [ngClass]="{
+                'is-invalid':
+                  appointmentForm.get('appointmentDate')?.invalid &&
+                  appointmentForm.get('appointmentDate')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">
+              {{ getError("appointmentDate") }}
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3" *ngIf="appointmentId">
+            <label class="form-label">Estado</label>
+            <select
+              formControlName="status"
+              class="form-select"
+              [ngClass]="{
+                'is-invalid':
+                  appointmentForm.get('status')?.invalid &&
+                  appointmentForm.get('status')?.touched,
+              }"
+            >
+              <option *ngFor="let opt of statusOptions" [value]="opt.value">
+                {{ opt.label }}
+              </option>
+            </select>
+            <div class="invalid-feedback">{{ getError("status") }}</div>
+          </div>
+
+          <div class="col-md-6 mb-3" *ngIf="!appointmentId">
+            <label class="form-label">Estado</label>
+            <input
+              type="text"
+              class="form-control"
+              value="Pendiente"
+              readonly
+              disabled
+            />
+            <small class="text-muted"
+              >Las nuevas citas se registran como 'Pendiente'.</small
+            >
+          </div>
+
+          <div class="col-12 mb-3">
+            <label class="form-label">Motivo de la Cita</label>
+            <textarea
+              formControlName="reason"
+              class="form-control"
+              rows="3"
+              [ngClass]="{
+                'is-invalid':
+                  appointmentForm.get('reason')?.invalid &&
+                  appointmentForm.get('reason')?.touched,
+              }"
+            ></textarea>
+            <div class="invalid-feedback">{{ getError("reason") }}</div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button
+            type="button"
+            class="btn btn-secondary me-2"
+            routerLink="/appointments"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="appointmentForm.invalid || (appointmentId && !appointmentForm.dirty)"
+          >
+            <i class="bi bi-calendar-check"></i>
+            {{ appointmentId ? "Actualizar Cita" : "Agendar Cita" }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
