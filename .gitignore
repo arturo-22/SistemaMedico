@@ -1,0 +1,16 @@
+# --- BACKEND (.NET) ---
+bin/
+obj/
+.vs/
+.user
+appsettings.Development.json
+
+# --- FRONTEND (Angular) ---
+node_modules/
+.angular/
+dist/
+.vscode/
+
+# --- OTROS ---
+.DS_Store
+Thumbs.db
